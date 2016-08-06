@@ -2,6 +2,7 @@ package repositorio;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -28,6 +29,13 @@ public class ClienteRepositorioTeste {
 	public void buscarTodosClientesDaAgencia(){
 		ClienteRepositorio rep = new ClienteRepositorio();
 		List<ClientePessoaFisica> clientes = rep.findByAgency(0);
+		assertEquals(1, clientes.size());
+	}
+	
+	@Test
+	public void buscarTodosGerentes(){
+		ClienteRepositorio rep = new ClienteRepositorio();
+		List<String> clientes = rep.findAllManagers();
 		assertEquals(1, clientes.size());
 	}
 	

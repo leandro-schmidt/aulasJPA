@@ -1,6 +1,7 @@
 package repositorio;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -32,6 +33,14 @@ public class ClienteRepositorio {
 		TypedQuery<ClientePessoaFisica> tp = em.createQuery(jpql, ClientePessoaFisica.class);
 		tp.setParameter("numero", numero);
 		return tp.getResultList();
+	}
+
+	public List<String> findAllManagers(){
+		List<String> ret = new ArrayList<String>();
+		String jpql = String.format(" SELECT o.agencia.nomeGerente FROM %s o order by o.agencia.nomeGerente desc ", ClientePessoaFisica.class.getName());
+		TypedQuery<String> tp = em.createQuery(jpql, String.class);
+		ret = tp.getResultList();
+		return ret;
 	}
 	
 }
