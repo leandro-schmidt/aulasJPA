@@ -11,6 +11,7 @@ import org.junit.Test;
 import domain.ClienteInstituicaoPublica;
 import domain.ClientePessoaFisica;
 import domain.ClientePessoaJuridica;
+import domain.Endereco;
 
 public class Ping {
 	
@@ -31,13 +32,11 @@ public class Ping {
 			c.setRg((long) i);
 			c.setTelefone("981016173");
 			c.setNome("Pessoa teste " + i);
-			c.setCidade("Campinas");
 			//Pessoa Juridica
 			cj.setCnpj((long) i);
 			cj.setFaturamento(new BigDecimal(500000));
 			cj.setRamoAtuacao("Imobiliario");
 			cj.setNome("Empresa teste " + i);
-			cj.setCidade("São Paulo");
 			em.persist(c);
 			em.persist(cj);
 		}
@@ -47,13 +46,13 @@ public class Ping {
 	}
 	
 	@Test
+	@Ignore
 	public void criaMaisMassa(){
 		EntityManager em = EntityManagerFacade.em();
 		em.getTransaction().begin();
 		for (int i = 0; i < 50; i++){
 			ClienteInstituicaoPublica c = new ClienteInstituicaoPublica();
 			c.setNome("Instituicao " + i);
-			c.setCidade("São Paulo");
 			c.setEstado("SP");
 			c.setTelefone1("38552542");
 			c.setTelefone2("38552545");
@@ -61,6 +60,34 @@ public class Ping {
 		}
 		em.getTransaction().commit();
 	}
+	
+	@Test
+	public void testEndereco(){
+		EntityManager em = EntityManagerFacade.em();
+		em.getTransaction().begin();
+		ClientePessoaFisica c = new ClientePessoaFisica();
+		Endereco e = new Endereco();
+		
+		c.setNome("Jo�o");
+		c.setCpf(4444444444444l);
+		c.setRg(5555555555l);
+		e.setBairro("bairro teste");
+		e.setCidade("cidade teste");
+		e.setRua("rua teste");
+		e.setCep("33333333333");
+		e.setNumero(2);
+		c.setEndereco(e);
+		
+		em.merge(c);
+		
+	
+		
+		
+		em.getTransaction().commit();
+		
+		
+	}
+	
 	
 
 }
