@@ -15,8 +15,13 @@ import domain.Agencia;
 import domain.ClienteInstituicaoPublica;
 import domain.ClientePessoaFisica;
 import domain.ClientePessoaJuridica;
+import domain.ContaCorrente;
+import domain.Debito;
+import domain.Deposito;
 import domain.Endereco;
 import domain.Pacote;
+import domain.Saque;
+import domain.Transferencia;
 import junit.framework.Assert;
 
 public class Ping {
@@ -96,6 +101,7 @@ public class Ping {
 	
 	
 	@Test
+	@Ignore
 	public void testAgencia(){
 		EntityManager em = EntityManagerFacade.em();
 		em.getTransaction().begin();
@@ -167,5 +173,60 @@ public class Ping {
 		em.getTransaction().commit();	
 	}
 
-
+	@Test
+	public void testeTransacoes(){
+		EntityManager em = EntityManagerFacade.em();
+		em.getTransaction().begin();
+		ClientePessoaFisica c = new ClientePessoaFisica();
+		Endereco e = new Endereco();
+		Endereco e2 = new Endereco();
+		Agencia a = new Agencia();
+		ContaCorrente cc = new ContaCorrente();
+		Deposito d = new Deposito();
+		Saque s = new Saque();
+		Transferencia t = new Transferencia();
+		
+		
+		c.setNome("João");
+		c.setCpf(4444444444444l);
+		c.setRg(5555555555l);
+		e.setBairro("bairro teste");
+		e.setCidade("cidade teste");
+		e.setRua("rua teste");
+		e.setCep("33333333333");
+		e.setNumero(2);
+		c.setEndereco(e);
+		
+		e2.setBairro("bairro teste agencia");
+		e2.setCidade("cidade teste agencia");
+		e2.setRua("rua teste agencia");
+		e2.setCep("33333333333 agencia");
+		e2.setNumero(2);
+		
+		a.setEndereco(e2);
+		a.setNomeGerente("nome teste");
+		a.setClientesPf(Arrays.asList(c));
+		c.setAgencia(a);
+		
+		cc.setDataCriacao(new Date());
+		cc.setNumero("33333");
+		
+		d.setValor(new BigDecimal(3000));
+		d.setConta(cc);
+		s.setValor(new BigDecimal(500));
+		s.setConta(cc);
+		t.setValor(new BigDecimal(500));
+		t.setConta(cc);
+		t.setContaDestino(new ContaCorrente());
+		
+		cc.setTransacoes(Arrays.asList(d, s, t));
+		em.merge(a);
+		em.merge(cc);
+		
+		em.getTransaction().commit();
+		
+		assertEquals(new BigDecimal(2000), cc.getSaldo());
+		
+		
+	}
 }

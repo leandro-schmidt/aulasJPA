@@ -41,6 +41,6 @@ public class ClienteRepositorio {
 		TypedQuery<String> tp = em.createQuery(jpql, String.class);
 		ret = tp.getResultList();
 		return ret;
-	}
+	} 
 	
 }

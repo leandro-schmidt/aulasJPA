@@ -23,6 +23,15 @@ public abstract class Cliente {
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
 	private List<Pacote> pacotes;
 	
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+	private List<ContaCorrente> contas;
+	
+	public List<ContaCorrente> getContas() {
+		return contas;
+	}
+	public void setContas(List<ContaCorrente> contas) {
+		this.contas = contas;
+	}
 	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
 	@JoinColumn(name = "agencia")
 	private Agencia agencia; 
