@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import domain.ClientePessoaFisica;
+import domain.banco.ClientePessoaFisica;
 
 public class ClienteRepositorioTeste {
 

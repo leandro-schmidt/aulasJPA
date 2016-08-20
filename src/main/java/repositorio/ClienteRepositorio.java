@@ -7,8 +7,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import domain.Agencia;
-import domain.ClientePessoaFisica;
+import domain.banco.Agencia;
+import domain.banco.ClientePessoaFisica;
 import persistence.EntityManagerFacade;
 
 public class ClienteRepositorio {

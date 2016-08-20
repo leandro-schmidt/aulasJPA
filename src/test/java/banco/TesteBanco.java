@@ -1,4 +1,4 @@
-package persistence;
+package banco;
 
 import static org.junit.Assert.*;
 
@@ -11,20 +11,22 @@ import javax.persistence.EntityManager;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import domain.Agencia;
-import domain.ClienteInstituicaoPublica;
-import domain.ClientePessoaFisica;
-import domain.ClientePessoaJuridica;
-import domain.ContaCorrente;
-import domain.Debito;
-import domain.Deposito;
-import domain.Endereco;
-import domain.Pacote;
-import domain.Saque;
-import domain.Transferencia;
+import domain.banco.Agencia;
+import domain.banco.ClienteInstituicaoPublica;
+import domain.banco.ClientePessoaFisica;
+import domain.banco.ClientePessoaJuridica;
+import domain.banco.ContaCorrente;
+import domain.banco.Debito;
+import domain.banco.Deposito;
+import domain.banco.Emprestimo;
+import domain.banco.Endereco;
+import domain.banco.Pacote;
+import domain.banco.Saque;
+import domain.banco.Transferencia;
 import junit.framework.Assert;
+import persistence.EntityManagerFacade;
 
-public class Ping {
+public class TesteBanco {
 	
 	@Test
 	@Ignore
@@ -46,7 +48,7 @@ public class Ping {
 			//Pessoa Juridica
 			cj.setCnpj((long) i);
 			cj.setFaturamento(new BigDecimal(500000));
-			cj.setRamoAtuacao("Imobiliario");
+			cj.setRamoAtuacao(ClientePessoaJuridica.RamoAtuacao.IMOBILIARIO);
 			cj.setNome("Empresa teste " + i);
 			em.persist(c);
 			em.persist(cj);
@@ -174,6 +176,7 @@ public class Ping {
 	}
 
 	@Test
+	@Ignore
 	public void testeTransacoes(){
 		EntityManager em = EntityManagerFacade.em();
 		em.getTransaction().begin();
@@ -226,7 +229,61 @@ public class Ping {
 		em.getTransaction().commit();
 		
 		assertEquals(new BigDecimal(2000), cc.getSaldo());
+	}
+	
+	@Test
+	public void testeEmprestimo(){
+		EntityManager em = EntityManagerFacade.em();
+		em.getTransaction().begin();
+		
+		ContaCorrente cc = new ContaCorrente();
+		ContaCorrente cc2 = new ContaCorrente();
+		Deposito d = new Deposito();
+		Saque s = new Saque();
+		ClientePessoaFisica c = new ClientePessoaFisica();
+		Endereco e = new Endereco();
+		Emprestimo ee = new Emprestimo();
+		
+		
+		c.setNome("João");
+		c.setCpf(4444444444444l);
+		c.setRg(5555555555l);
+		e.setBairro("bairro teste");
+		e.setCidade("cidade teste");
+		e.setRua("rua teste");
+		e.setCep("33333333333");
+		e.setNumero(2);
+		c.setEndereco(e);
+		
+		
+		
+		cc.setDataCriacao(new Date());
+		cc.setNumero("33333");
+		cc2.setDataCriacao(new Date());
+		cc2.setNumero("444444");
+		
+		d.setValor(new BigDecimal(200));
+		d.setConta(cc);
+		s.setValor(new BigDecimal(100));
+		s.setConta(cc);
+		d.setConta(cc2);
+		s.setConta(cc2);
+		
+		
+		cc.setTransacoes(Arrays.asList(d, s));
+		cc2.setTransacoes(Arrays.asList(d, s));
+		c.setContas(Arrays.asList(cc, cc2));
+
+		em.merge(c);
+		em.merge(cc);
+		
+		em.getTransaction().commit();
+		assertTrue(c.podeContratarEmprestimo());
 		
 		
 	}
+	
+	
+	
+	
 }

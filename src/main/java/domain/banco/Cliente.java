@@ -1,5 +1,6 @@
-package domain;
+package domain.banco;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @MappedSuperclass
@@ -75,6 +77,17 @@ public abstract class Cliente {
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public boolean podeContratarEmprestimo() {
+		BigDecimal saldoTotal = new BigDecimal(0);
+		for (ContaCorrente cc : this.contas) {
+			saldoTotal = saldoTotal.add(cc.getSaldo());
+			if (saldoTotal.compareTo( BigDecimal.valueOf(200) ) >= 0){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

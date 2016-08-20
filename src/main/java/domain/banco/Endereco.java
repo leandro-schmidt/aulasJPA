@@ -1,4 +1,4 @@
-package domain;
+package domain.banco;
 
 
 import javax.persistence.Column;

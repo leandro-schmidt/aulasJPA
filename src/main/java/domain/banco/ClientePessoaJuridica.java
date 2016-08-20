@@ -1,4 +1,4 @@
-package domain;
+package domain.banco;
 
 import java.math.BigDecimal;
 
@@ -19,7 +19,9 @@ public class ClientePessoaJuridica extends Cliente{
 	private BigDecimal faturamento;
 	
 	@Column
-	private String ramoAtuacao;
+	private RamoAtuacao ramoAtuacao;
+	
+	public enum RamoAtuacao { DIGITAL, IMOBILIARIO, VAREJO };
 
 	public long getCnpj() {
 		return cnpj;
@@ -37,11 +39,11 @@ public class ClientePessoaJuridica extends Cliente{
 		this.faturamento = faturamento;
 	}
 
-	public String getRamoAtuacao() {
+	public RamoAtuacao getRamoAtuacao() {
 		return ramoAtuacao;
 	}
 
-	public void setRamoAtuacao(String ramoAtuacao) {
+	public void setRamoAtuacao(RamoAtuacao ramoAtuacao) {
 		this.ramoAtuacao = ramoAtuacao;
 	}
 	

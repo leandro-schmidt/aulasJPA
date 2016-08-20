@@ -1,6 +1,7 @@
-package domain;
+package domain.banco;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -29,7 +30,7 @@ public abstract class Transacao {
 	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
 	@JoinColumn(name = "conta")
 	private ContaCorrente conta;
-	
+
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
 	private ContaCorrente contaDestino;
 	
